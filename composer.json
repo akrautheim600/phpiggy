@@ -1,0 +1,17 @@
+{
+    "name": "ark_industries_services/phpiggy",
+    "description": "A PHP application for tracking expenses",
+    "type": "project",
+    "authors": [
+        {
+            "name": "albert krautheim"
+        }
+    ],
+    "require": {},
+    "autoload":{
+      "psr-4": {
+        "Framework\\": "src/Framework",
+        "App\\": "src/App"
+      }  
+    }
+}
