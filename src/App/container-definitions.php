@@ -3,9 +3,14 @@
 
 declare(strict_types=1);
 
-use Framework\{TemplateEngine, Database};
+use Framework\{TemplateEngine, Database, Container};
 use App\Config\Paths;
-use App\Services\VaildatorService;
+use App\Services\{
+    VaildatorService,
+    UserService,
+    TransactionService,
+    ReceiptService
+};
 
 
 
@@ -16,5 +21,18 @@ return [
         'host'  => $_ENV['DB_HOST'],
         'port' => $_ENV['DB_PORT'],
         'dbname' => $_ENV['DB_NAME'],
-    ], $_ENV['DB_USER'], $_ENV['DB_PASS'])
+    ], $_ENV['DB_USER'], $_ENV['DB_PASS']),
+    UserService::class => function (Container $container) {
+        $db = $container->get(Database::class);
+        return new UserService($db);
+    },
+    TransactionService::class => function (Container $container) {
+        $db = $container->get(Database::class);
+
+        return new TransactionService($db);
+    },
+    ReceiptService::class => function (Container $container) {
+        $db = $container->get(Database::class);
+        return new ReceiptService($db);
+    }
 ];

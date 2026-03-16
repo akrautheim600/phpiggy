@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Framework\TemplateEngine;
-use App\Services\VaildatorService;
+use App\Services\{
+    VaildatorService,
+    UserService
+};
 
 class AuthController
 {
 
     public function __construct(
         private TemplateEngine $view,
-        private VaildatorService $vaildatorService
+        private VaildatorService $vaildatorService,
+        private UserService $userService
     ) {}
 
     public function registerView()
@@ -24,5 +28,32 @@ class AuthController
     public function register()
     {
         $this->vaildatorService->vaildateRegister($_POST);
+
+        $this->userService->isEmailTaken($_POST['email']);
+
+        $this->userService->create($_POST);
+
+        redirectTo('/');
+    }
+
+    public function loginView()
+    {
+        echo $this->view->render("login.php");
+    }
+
+    public function login()
+    {
+        $this->vaildatorService->validateLogin($_POST);
+
+        $this->userService->login($_POST);
+
+        redirectTo('/');
+    }
+
+    public function logout()
+    {
+        $this->userService->logout();
+
+        redirectTo('/login');
     }
 }

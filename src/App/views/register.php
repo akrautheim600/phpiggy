@@ -2,6 +2,7 @@
 <section
     class="max-w-2xl mx-auto mt-12 p-4 bg-white shadow-md border border-gray-200 rounded">
     <form method="POST" class="grid grid-cols-1 gap-6">
+        <?php include $this->resolve('partials/_csrf.php'); ?>
         <!-- Email -->
         <label class="block">
             <span class="text-gray-700">Email address</span>
@@ -39,8 +40,8 @@
                 name="country"
                 class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 <option value="USA">USA</option>
-                <option value="Canada" <?php echo $oldFormData['country'] === 'Canada' ? 'selected' : ''; ?>>Canada</option>
-                <option value="Mexico" <?php echo $oldFormData['country'] === 'Mexico' ? 'selected' : ''; ?>>Mexico</option>
+                <option <?php echo (isset($oldFormData['country']) && $oldFormData['country'] === 'Canada') ? 'selected' : ''; ?> value="Canada">Canada</option>
+                <option <?php echo (isset($oldFormData['country']) && $oldFormData['country'] === 'Mexico') ? 'selected' : ''; ?> value="Mexico">Mexico</option>
                 <option value="Invalid">Invalid Country</option>
             </select>
             <?php if (array_key_exists('country', $errors)): ?>
@@ -53,7 +54,7 @@
         <label class="block">
             <span class="text-gray-700">Social Media URL</span>
             <input
-                <?php echo e($oldFormData['socialMediaURL'] ?? ''); ?>
+                value="<?php echo e($oldFormData['socialMediaURL'] ?? ''); ?>"
                 type="text"
                 name="socialMediaURL"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"

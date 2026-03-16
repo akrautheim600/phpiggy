@@ -32,16 +32,38 @@ class App
     public function get(string $path, array $controller)
     {
         $this->router->add('GET', $path, $controller);
+
+        return $this;
     }
 
     public function post(string $path, array $controller)
     {
         $this->router->add('POST', $path, $controller);
+
+        return $this;
     }
+
+    public function delete(string $path, array $controller)
+    {
+        $this->router->add('DELETE', $path, $controller);
+
+        return $this;
+    }
+
 
 
     public function addMiddleware(string $middleware)
     {
         $this->router->addMiddleware($middleware);
+    }
+
+    public function add(string $middleware)
+    {
+        $this->router->addRouteMiddleware($middleware);
+    }
+
+    public function setErrorHandler(array $controller)
+    {
+        $this->router->setErrorHandler($controller);
     }
 }

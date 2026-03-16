@@ -11,7 +11,10 @@ use Framework\Rules\{
     MinRule,
     InRule,
     UrlRule,
-    MatchRule
+    MatchRule,
+    LengthMaxRule,
+    NumericRule,
+    DateFormatRule
 };
 
 class VaildatorService
@@ -29,6 +32,9 @@ class VaildatorService
         $this->vaildator->add('in', new InRule());
         $this->vaildator->add('url', new UrlRule());
         $this->vaildator->add('match', new MatchRule());
+        $this->vaildator->add('lengthMax', new LengthMaxRule());
+        $this->vaildator->add('numeric', new NumericRule());
+        $this->vaildator->add('dateFormat', new DateFormatRule());
     }
 
     public function vaildateRegister(array $formData)
@@ -41,6 +47,23 @@ class VaildatorService
             'password'   =>  ['required'],
             'confirmPassword'   =>  ['required', 'match:password'],
             'tos'   =>  ['required']
+        ]);
+    }
+
+    public function validateLogin(array $formData)
+    {
+        $this->vaildator->vaildate($formData, [
+            'email' => ['required', 'email'],
+            'password' => ['required']
+        ]);
+    }
+
+    public function validateTransaction(array $formData)
+    {
+        $this->vaildator->vaildate($formData, [
+            'description' => ['required', 'lengthMax:255'],
+            'amount'  =>  ['required', 'numeric'],
+            'date'  =>  ['required', 'dateFormat:Y-m-d']
         ]);
     }
 }
